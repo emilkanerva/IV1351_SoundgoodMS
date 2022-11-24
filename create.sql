@@ -184,52 +184,52 @@ CREATE TABLE student_group_lesson (
 ALTER TABLE student_group_lesson ADD CONSTRAINT PK_student_group_lesson PRIMARY KEY (group_lesson_id,person_student_id);
 
 
-ALTER TABLE student ADD CONSTRAINT FK_student_0 FOREIGN KEY (person_id) REFERENCES person (person_id) ON DELETE CASCADE;
-ALTER TABLE student ADD CONSTRAINT FK_student_1 FOREIGN KEY (application_id) REFERENCES application (application_id) ON DELETE SET NULL;
+ALTER TABLE student ADD CONSTRAINT FK_student_0 FOREIGN KEY (person_id) REFERENCES person (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE student ADD CONSTRAINT FK_student_1 FOREIGN KEY (application_id) REFERENCES application (application_id) ON DELETE SET NULL ON UPDATE CASCADE;
 
 
-ALTER TABLE student_instrument ADD CONSTRAINT FK_student_instrument_0 FOREIGN KEY (knowledge_id) REFERENCES instrument_knowledge (knowledge_id) ON DELETE NO ACTION;
-ALTER TABLE student_instrument ADD CONSTRAINT FK_student_instrument_1 FOREIGN KEY (person_id) REFERENCES student (person_id) ON DELETE CASCADE;
+ALTER TABLE student_instrument ADD CONSTRAINT FK_student_instrument_0 FOREIGN KEY (knowledge_id) REFERENCES instrument_knowledge (knowledge_id) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE student_instrument ADD CONSTRAINT FK_student_instrument_1 FOREIGN KEY (person_id) REFERENCES student (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-ALTER TABLE student_sibling ADD CONSTRAINT FK_student_sibling_0 FOREIGN KEY (student_id) REFERENCES student (person_id) ON DELETE CASCADE;
-ALTER TABLE student_sibling ADD CONSTRAINT FK_student_sibling_1 FOREIGN KEY (sibling_id) REFERENCES student (person_id) ON DELETE CASCADE;
+ALTER TABLE student_sibling ADD CONSTRAINT FK_student_sibling_0 FOREIGN KEY (student_id) REFERENCES student (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE student_sibling ADD CONSTRAINT FK_student_sibling_1 FOREIGN KEY (sibling_id) REFERENCES student (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-ALTER TABLE application_instrument ADD CONSTRAINT FK_application_instrument_0 FOREIGN KEY (application_id) REFERENCES application (application_id) ON DELETE CASCADE;
-ALTER TABLE application_instrument ADD CONSTRAINT FK_application_instrument_1 FOREIGN KEY (instrument_details_id) REFERENCES instrument_knowledge (knowledge_id) ON DELETE NO ACTION;
+ALTER TABLE application_instrument ADD CONSTRAINT FK_application_instrument_0 FOREIGN KEY (application_id) REFERENCES application (application_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE application_instrument ADD CONSTRAINT FK_application_instrument_1 FOREIGN KEY (instrument_details_id) REFERENCES instrument_knowledge (knowledge_id) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 
-ALTER TABLE instructor ADD CONSTRAINT FK_instructor_0 FOREIGN KEY (person_id) REFERENCES person (person_id) ON DELETE CASCADE;
+ALTER TABLE instructor ADD CONSTRAINT FK_instructor_0 FOREIGN KEY (person_id) REFERENCES person (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-ALTER TABLE instructor_instrument ADD CONSTRAINT FK_instructor_instrument_0 FOREIGN KEY (person_instructor_id) REFERENCES instructor (person_id) ON DELETE NO ACTION;
+ALTER TABLE instructor_instrument ADD CONSTRAINT FK_instructor_instrument_0 FOREIGN KEY (person_instructor_id) REFERENCES instructor (person_id) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 
-ALTER TABLE rental ADD CONSTRAINT FK_rental_0 FOREIGN KEY (person_id) REFERENCES student (person_id) ON DELETE CASCADE;
-ALTER TABLE rental ADD CONSTRAINT FK_rental_1 FOREIGN KEY (instrument_id) REFERENCES rental_instrument (instrument_id) ON DELETE NO ACTION;
+ALTER TABLE rental ADD CONSTRAINT FK_rental_0 FOREIGN KEY (person_id) REFERENCES student (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE rental ADD CONSTRAINT FK_rental_1 FOREIGN KEY (instrument_id) REFERENCES rental_instrument (instrument_id) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 
-ALTER TABLE ensemble ADD CONSTRAINT FK_ensemble_0 FOREIGN KEY (next_scheduled_id) REFERENCES ensemble (ensemble_id) ON DELETE NO ACTION;
-ALTER TABLE ensemble ADD CONSTRAINT FK_ensemble_1 FOREIGN KEY (price_id) REFERENCES price_details (price_id) ON DELETE NO ACTION;
-ALTER TABLE ensemble ADD CONSTRAINT FK_ensemble_2 FOREIGN KEY (person_instructor_id) REFERENCES instructor (person_id) ON DELETE CASCADE;
+ALTER TABLE ensemble ADD CONSTRAINT FK_ensemble_0 FOREIGN KEY (next_scheduled_id) REFERENCES ensemble (ensemble_id) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE ensemble ADD CONSTRAINT FK_ensemble_1 FOREIGN KEY (price_id) REFERENCES price_details (price_id) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE ensemble ADD CONSTRAINT FK_ensemble_2 FOREIGN KEY (person_instructor_id) REFERENCES instructor (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-ALTER TABLE group_lesson ADD CONSTRAINT FK_group_lesson_0 FOREIGN KEY (next_scheduled_id) REFERENCES group_lesson (group_lesson_id) ON DELETE NO ACTION;
-ALTER TABLE group_lesson ADD CONSTRAINT FK_group_lesson_1 FOREIGN KEY (price_id) REFERENCES price_details (price_id) ON DELETE NO ACTION;
-ALTER TABLE group_lesson ADD CONSTRAINT FK_group_lesson_2 FOREIGN KEY (person_instructor_id) REFERENCES instructor (person_id) ON DELETE CASCADE;
+ALTER TABLE group_lesson ADD CONSTRAINT FK_group_lesson_0 FOREIGN KEY (next_scheduled_id) REFERENCES group_lesson (group_lesson_id) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE group_lesson ADD CONSTRAINT FK_group_lesson_1 FOREIGN KEY (price_id) REFERENCES price_details (price_id) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE group_lesson ADD CONSTRAINT FK_group_lesson_2 FOREIGN KEY (person_instructor_id) REFERENCES instructor (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-ALTER TABLE individual_lesson ADD CONSTRAINT FK_individual_lesson_0 FOREIGN KEY (price_id) REFERENCES price_details (price_id) ON DELETE NO ACTION;
-ALTER TABLE individual_lesson ADD CONSTRAINT FK_individual_lesson_1 FOREIGN KEY (person_student_id) REFERENCES student (person_id) ON DELETE CASCADE;
-ALTER TABLE individual_lesson ADD CONSTRAINT FK_individual_lesson_2 FOREIGN KEY (person_instructor_id) REFERENCES instructor (person_id) ON DELETE CASCADE;
+ALTER TABLE individual_lesson ADD CONSTRAINT FK_individual_lesson_0 FOREIGN KEY (price_id) REFERENCES price_details (price_id) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE individual_lesson ADD CONSTRAINT FK_individual_lesson_1 FOREIGN KEY (person_student_id) REFERENCES student (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE individual_lesson ADD CONSTRAINT FK_individual_lesson_2 FOREIGN KEY (person_instructor_id) REFERENCES instructor (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-ALTER TABLE student_ensemble ADD CONSTRAINT FK_student_ensemble_0 FOREIGN KEY (ensemble_id) REFERENCES ensemble (ensemble_id) ON DELETE CASCADE;
-ALTER TABLE student_ensemble ADD CONSTRAINT FK_student_ensemble_1 FOREIGN KEY (person_student_id) REFERENCES student (person_id) ON DELETE CASCADE;
+ALTER TABLE student_ensemble ADD CONSTRAINT FK_student_ensemble_0 FOREIGN KEY (ensemble_id) REFERENCES ensemble (ensemble_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE student_ensemble ADD CONSTRAINT FK_student_ensemble_1 FOREIGN KEY (person_student_id) REFERENCES student (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-ALTER TABLE student_group_lesson ADD CONSTRAINT FK_student_group_lesson_0 FOREIGN KEY (group_lesson_id) REFERENCES group_lesson (group_lesson_id) ON DELETE CASCADE;
-ALTER TABLE student_group_lesson ADD CONSTRAINT FK_student_group_lesson_1 FOREIGN KEY (person_student_id) REFERENCES student (person_id) ON DELETE CASCADE;
+ALTER TABLE student_group_lesson ADD CONSTRAINT FK_student_group_lesson_0 FOREIGN KEY (group_lesson_id) REFERENCES group_lesson (group_lesson_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE student_group_lesson ADD CONSTRAINT FK_student_group_lesson_1 FOREIGN KEY (person_student_id) REFERENCES student (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
