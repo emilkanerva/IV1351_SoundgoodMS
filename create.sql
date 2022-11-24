@@ -6,8 +6,8 @@ CREATE TYPE instrumentType AS ENUM ('Guitar', 'Piano', 'Triangle', 'Trumpet', 'F
 CREATE TABLE application (
  application_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
  name VARCHAR(100) NOT NULL,
- phone_number CHAR(16) NOT NULL,
- email CHAR(100) NOT NULL,
+ phone_number VARCHAR(16) NOT NULL,
+ email VARCHAR(100) NOT NULL,
  application_state applicationState NOT NULL DEFAULT 'Waiting'
 );
 
@@ -127,7 +127,7 @@ CREATE TABLE ensemble (
  ensemble_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
  minimum_students INT NOT NULL,
  maximum_students INT NOT NULL,
- genre CHAR(50) NOT NULL,
+ genre VARCHAR(50) NOT NULL,
  next_scheduled_id INT,
  start_time TIMESTAMP NOT NULL,
  end_time TIMESTAMP NOT NULL,
@@ -143,7 +143,7 @@ CREATE TABLE group_lesson (
  minimum_students INT NOT NULL,
  maximum_students INT NOT NULL,
  skill_level skillLevel NOT NULL,
- instrument CHAR(10) NOT NULL,
+ instrument instrumentType NOT NULL,
  next_scheduled_id INT,
  start_time TIMESTAMP NOT NULL,
  end_time TIMESTAMP NOT NULL,
@@ -157,7 +157,7 @@ ALTER TABLE group_lesson ADD CONSTRAINT PK_group_lesson PRIMARY KEY (group_lesso
 CREATE TABLE individual_lesson (
  individual_lesson_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
  skill_level skillLevel NOT NULL,
- instrument CHAR(10) NOT NULL,
+ instrument instrumentType NOT NULL,
  start_time TIMESTAMP NOT NULL,
  end_time TIMESTAMP NOT NULL,
  price_id INT NOT NULL,
