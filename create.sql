@@ -233,3 +233,56 @@ ALTER TABLE student_group_lesson ADD CONSTRAINT FK_student_group_lesson_0 FOREIG
 ALTER TABLE student_group_lesson ADD CONSTRAINT FK_student_group_lesson_1 FOREIGN KEY (person_student_id) REFERENCES student (person_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
+CREATE VIEW sibling_counts AS
+    SELECT person_id, CASE WHEN rc IS NULL THEN 0 ELSE rc END AS count
+    FROM student LEFT JOIN
+    (SELECT student_id, COUNT(*) AS rc FROM student_sibling GROUP BY student_id) AS sbl
+    ON person_id = student_id;
+
+
+CREATE VIEW instr_ind_count AS
+    WITH tbl AS
+        (SELECT person_instructor_id, COUNT(*) AS count FROM individual_lesson as l
+        WHERE EXTRACT(YEAR FROM l.start_time) = EXTRACT(YEAR FROM CURRENT_DATE) 
+        AND EXTRACT(MONTH FROM l.start_time) = EXTRACT(MONTH FROM CURRENT_DATE)
+        GROUP BY person_instructor_id)
+    SELECT *, CASE WHEN count IS NULL THEN 0 ELSE count END as cnt
+    FROM instructor LEFT JOIN tbl ON person_instructor_id = person_id;
+
+CREATE VIEW instr_grp_count AS
+    WITH tbl AS
+        (SELECT person_instructor_id, COUNT(*) AS count FROM group_lesson as l
+        WHERE EXTRACT(YEAR FROM l.start_time) = EXTRACT(YEAR FROM CURRENT_DATE) 
+        AND EXTRACT(MONTH FROM l.start_time) = EXTRACT(MONTH FROM CURRENT_DATE)
+        GROUP BY person_instructor_id)
+    SELECT *, CASE WHEN count IS NULL THEN 0 ELSE count END as cnt
+    FROM instructor LEFT JOIN tbl ON person_instructor_id = person_id;
+
+
+CREATE VIEW instr_ens_count AS
+    WITH tbl AS
+        (SELECT person_instructor_id, COUNT(*) AS count FROM ensemble as l
+        WHERE EXTRACT(YEAR FROM l.start_time) = EXTRACT(YEAR FROM CURRENT_DATE) 
+        AND EXTRACT(MONTH FROM l.start_time) = EXTRACT(MONTH FROM CURRENT_DATE)
+        GROUP BY person_instructor_id)
+    SELECT *, CASE WHEN count IS NULL THEN 0 ELSE count END as cnt
+    FROM instructor LEFT JOIN tbl ON person_instructor_id = person_id;
+
+CREATE FUNCTION current_dow() RETURNS integer
+    RETURN CASE WHEN CAST(EXTRACT(dow FROM CURRENT_DATE) AS INT) = 0 THEN 7 ELSE CAST(EXTRACT(dow FROM CURRENT_DATE) AS INT) END - 1;
+
+CREATE FUNCTION get_weekday(t timestamp) RETURNS VARCHAR(9)
+    RETURN CASE WHEN EXTRACT(dow FROM t) = 0 THEN 'Sunday'
+                WHEN EXTRACT(dow FROM t) = 1 THEN 'Monday'
+                WHEN EXTRACT(dow FROM t) = 2 THEN 'Tuesday'
+                WHEN EXTRACT(dow FROM t) = 3 THEN 'Wednesday'
+                WHEN EXTRACT(dow FROM t) = 4 THEN 'Thursday'
+                WHEN EXTRACT(dow FROM t) = 5 THEN 'Friday'
+                WHEN EXTRACT(dow FROM t) = 6 THEN 'Saturday'
+                ELSE 'None' END;
+
+CREATE TABLE months (month INT PRIMARY KEY);
+INSERT INTO months VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11), (12);
+
+CREATE FUNCTION nullToZero(v bigint) RETURNS bigint
+    RETURN CASE WHEN v IS NULL THEN 0 ELSE v END;
